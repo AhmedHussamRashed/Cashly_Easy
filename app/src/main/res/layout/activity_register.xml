@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_grey"
+    tools:context=".RegisterActivity">
+
+    <!-- Logo -->
+    <TextView
+        android:id="@+id/tvLogoRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="C Cashly"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:textColor="#3F51B5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="60dp" />
+
+    <!-- Register Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardRegister"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/tvLogoRegister"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="30dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Name Input -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="الاسم الكامل"
+                android:textColor="#757575"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/etFullName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="أدخل اسمك الكامل"
+                android:inputType="textPersonName"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:gravity="right|center_vertical"
+                android:textDirection="rtl" />
+
+            <!-- Email Input -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="البريد الإلكتروني"
+                android:textColor="#757575"
+                android:textSize="14sp"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/etEmailRegister"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="أدخل بريدك الإلكتروني"
+                android:inputType="textEmailAddress"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:gravity="right|center_vertical"
+                android:textDirection="rtl" />
+
+            <!-- Password Input -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="كلمة المرور"
+                android:textColor="#757575"
+                android:textSize="14sp"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/etPasswordRegister"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="أدخل كلمة المرور"
+                android:inputType="textPassword"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:gravity="right|center_vertical"
+                android:textDirection="rtl" />
+
+            <!-- Confirm Password Input -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="تأكيد كلمة المرور"
+                android:textColor="#757575"
+                android:textSize="14sp"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/etConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="أعد إدخال كلمة المرور"
+                android:inputType="textPassword"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:gravity="right|center_vertical"
+                android:textDirection="rtl" />
+
+            <!-- Register Button -->
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="#3F51B5"
+                android:text="إنشاء حساب"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:cornerRadius="8dp" />
+
+            <!-- Login Link -->
+            <TextView
+                android:id="@+id/tvLoginLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="لديك حساب بالفعل؟ تسجيل الدخول"
+                android:textColor="#757575"
+                android:textSize="14sp"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Separator Text -->
+    <TextView
+        android:id="@+id/tvSocialLoginSeparator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="أو سجل الدخول بواسطة"
+        android:textColor="#757575"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/cardRegister"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp" />
+
+    <!-- Social Login Buttons -->
+    <LinearLayout
+        android:id="@+id/llSocialLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/tvSocialLoginSeparator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp">
+
+        <!-- Facebook -->
+        <ImageButton
+            android:id="@+id/ibFacebook"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_facebook"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="تسجيل الدخول بواسطة فيس بوك"
+            android:layout_marginEnd="16dp" />
+
+        <!-- Twitter -->
+        <ImageButton
+            android:id="@+id/ibTwitter"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_twitter"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="تسجيل الدخول بواسطة تويتر"
+            android:layout_marginEnd="16dp" />
+
+        <!-- Google -->
+        <ImageButton
+            android:id="@+id/ibGoogle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_google"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="تسجيل الدخول بواسطة جوجل" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

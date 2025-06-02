@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl"
+    android:padding="16dp"
+    android:background="#F9FAFB"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cashly"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#0D1B3E"
+            android:layout_marginBottom="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:elevation="2dp"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#FFFFFF"
+            android:gravity="end"
+            android:layoutDirection="rtl"
+            android:backgroundTintMode="src_in"
+            android:layout_gravity="end">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="الميزانيات"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#0D1B3E"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ملخص الإنفاق الشهري"
+                android:textColor="#999999"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tv_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1,750 رس"
+                android:textSize="24sp"
+                android:textColor="#0D1B3E"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+
+        <include layout="@layout/item_category_progress"/>
+        <include layout="@layout/item_category_progress"/>
+        <include layout="@layout/item_category_progress"/>
+
+    </LinearLayout>
+</ScrollView>

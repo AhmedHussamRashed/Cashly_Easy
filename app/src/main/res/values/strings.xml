@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Cashly Easy</string>
+    <string name="retry">Retry</string>
+    <string name="cashly">Cashly</string>
+    <string name="warning_icon">Warning Icon</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="please_try_again_later">Please try again later</string>
+    <string name="_99_00">-99.00</string>
+    <string name="_22">22 أبريل</string>
 </resources>

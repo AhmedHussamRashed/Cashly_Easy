@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/errorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".ErrorActivity">
+
+    <!-- App Name -->
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cashly"
+        android:textColor="#1E2A3D"
+        android:textSize="42sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Warning Icon -->
+    <ImageView
+        android:id="@+id/warningIcon"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/warning_icon"
+        android:contentDescription="@string/warning_icon"
+        android:layout_marginBottom="40dp" />
+
+    <!-- Error Message -->
+
+
+    <!-- Sub Message -->
+
+    <TextView
+        android:id="@+id/errorMessage"
+        android:layout_width="278dp"
+        android:layout_height="136dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="@string/something_went_wrong"
+        android:textColor="#1E2A3D"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tryAgainMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/please_try_again_later"
+        android:textColor="#1E2A3D"
+        android:textSize="26sp"
+        android:layout_marginBottom="32dp" />
+
+    <!-- Retry Button -->
+    <Button
+        android:id="@+id/retryButton"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="@string/retry"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#0A2540"
+        android:layout_marginTop="16dp" />
+</LinearLayout>

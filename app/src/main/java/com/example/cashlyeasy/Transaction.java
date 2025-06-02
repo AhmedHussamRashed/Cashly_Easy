@@ -15,15 +15,15 @@ public class Transaction {
         this.isIncome = isIncome;
     }
 
-    public String getTitle() {
+    public final String getTitle() {
         return title;
     }
 
-    public String getDate() {
+    public final String getDate() {
         return date;
     }
 
-    public String getAmount() {
+    public final String getAmount() {
         return amount;
     }
 

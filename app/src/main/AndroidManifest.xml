@@ -12,36 +12,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CashlyEasy"
         tools:targetApi="31">
-        <activity
-            android:name=".Requests"
-            android:exported="false" />
-        <activity
-            android:name=".Account"
-            android:exported="false" />
-        <activity
-            android:name=".Reports"
-            android:exported="false" />
-        <activity
-            android:name=".Exchange"
-            android:exported="false" />
-        <activity
-            android:name=".HomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false" /> <!-- SplashActivity is now the launcher -->
-        <activity
-            android:name=".SplashActivity"
-            android:exported="true">
+
+        <!-- الصفحات الحالية -->
+        <activity android:name=".Requests" android:exported="false" />
+        <activity android:name=".Account" android:exported="false" />
+        <activity android:name=".Reports" android:exported="false" />
+        <activity android:name=".Exchange" android:exported="false" />
+        <activity android:name=".HomeActivity" android:exported="false" />
+        <activity android:name=".RegisterActivity" android:exported="false" />
+        <activity android:name=".LoginActivity" android:exported="false" />
+
+        <!-- الصفحة الرئيسية عند الإقلاع -->
+        <activity android:name=".SplashActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- الصفحات الجديدة -->
+        <activity android:name=".DeleteAccountActivity" android:exported="false" />
+        <activity android:name=".DeleteAccountConferm" android:exported="false" />
+        <activity android:name=".ErrorActivity" android:exported="false" />
+        <activity android:name=".TransactionsActivity" android:exported="false" />
+
     </application>
 
 </manifest>

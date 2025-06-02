@@ -16,7 +16,6 @@ public class ErrorActivity extends AppCompatActivity {
         Button retryButton = findViewById(R.id.retryButton);
 
         retryButton.setOnClickListener(v -> {
-            // مثال: إعادة محاولة تحميل الصفحة الرئيسية
             Intent intent = new Intent(ErrorActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();

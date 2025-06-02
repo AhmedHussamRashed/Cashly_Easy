@@ -21,7 +21,6 @@ public class TransactionsActivity extends AppCompatActivity {
         transactionRecyclerView = findViewById(R.id.transactionRecyclerView);
         transactionList = new ArrayList<>();
 
-        // بيانات وهمية
         transactionList.add(new Transaction("بقالة", "23 أبريل", "-99.00", R.drawable.ic_groceries, false));
         transactionList.add(new Transaction("Spotify", "22 أبريل", "-17.99", R.drawable.ic_spotify, false));
         transactionList.add(new Transaction("الراتب", "21 أبريل", "+2500.00", R.drawable.ic_salary, true));

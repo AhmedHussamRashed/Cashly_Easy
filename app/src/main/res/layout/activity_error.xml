@@ -9,7 +9,6 @@
     android:orientation="vertical"
     tools:context=".ErrorActivity">
 
-    <!-- App Name -->
     <TextView
         android:id="@+id/appName"
         android:layout_width="wrap_content"
@@ -20,7 +19,6 @@
         android:textStyle="bold"
         android:layout_marginBottom="24dp" />
 
-    <!-- Warning Icon -->
     <ImageView
         android:id="@+id/warningIcon"
         android:layout_width="120dp"
@@ -29,10 +27,8 @@
         android:contentDescription="@string/warning_icon"
         android:layout_marginBottom="40dp" />
 
-    <!-- Error Message -->
 
 
-    <!-- Sub Message -->
 
     <TextView
         android:id="@+id/errorMessage"
@@ -54,7 +50,6 @@
         android:textSize="26sp"
         android:layout_marginBottom="32dp" />
 
-    <!-- Retry Button -->
     <Button
         android:id="@+id/retryButton"
         android:layout_width="200dp"

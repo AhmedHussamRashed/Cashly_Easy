@@ -29,17 +29,14 @@ public class DeleteAccountActivity extends AppCompatActivity {
                 return;
             }
 
-            // تنفيذ حذف الحساب بعد التأكد من كلمة المرور
             deleteAccount();
         });
     }
 
     private void deleteAccount() {
-        // هنا تضع كود الاتصال بالخادم أو قاعدة البيانات للتحقق من كلمة المرور وحذف الحساب
 
         Toast.makeText(this, "Account deleted", Toast.LENGTH_LONG).show();
 
-        // توجيه المستخدم إلى شاشة الدخول بعد حذف الحساب مثلاً
         Intent intent = new Intent(DeleteAccountActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();

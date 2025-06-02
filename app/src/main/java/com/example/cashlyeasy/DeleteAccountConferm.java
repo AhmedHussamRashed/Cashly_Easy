@@ -1,7 +1,6 @@
 package com.example.cashlyeasy;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,22 +17,11 @@ public class DeleteAccountConferm extends AppCompatActivity {
         btnCancel = findViewById(R.id.btn_cancel);
         btnDelete = findViewById(R.id.btn_delete);
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // أغلق الصفحة
-                finish();
-            }
-        });
+        btnCancel.setOnClickListener(v -> finish());
 
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // تنفيذ حذف الحساب
-                Toast.makeText(DeleteAccountConferm.this, "Account deleted permanently", Toast.LENGTH_LONG).show();
-                // هنا يمكنك إضافة كود لحذف الحساب نهائيًا
-                finish();
-            }
+        btnDelete.setOnClickListener(v -> {
+            Toast.makeText(DeleteAccountConferm.this, "Account deleted permanently", Toast.LENGTH_LONG).show();
+            finish();
         });
     }
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval"> <!-- الشكل بيضاوي، وبما أن العرض والارتفاع متساويان في ImageView، سيظهر كدائرة -->
+    <solid android:color="@color/transaction_green"/> <!-- استخدم اللون الأخضر الذي عرفته سابقاً أو لون أخضر مناسب -->
+    <!-- يمكنك إضافة حجم إذا أردت، لكن من الأفضل التحكم به من ImageView -->
+    <!-- <size android:width="40dp" android:height="40dp"/> -->
+</shape>

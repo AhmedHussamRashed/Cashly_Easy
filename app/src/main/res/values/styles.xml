@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LargeSwitchStyle" parent="Theme.AppCompat.Light">
+        <item name="android:minWidth">64dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:switchMinWidth">64dp</item>
+        <item name="android:thumbTextPadding">16dp</item>
+    </style>
+
+</resources>

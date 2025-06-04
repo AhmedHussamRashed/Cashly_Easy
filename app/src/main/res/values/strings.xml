@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Cashly Easy</string>
+
+    <string-array name="currency_array">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>SAR</item>
+        <item>EGP</item>
+        <item>AED</item>
+        <item>KWD</item>
+        <item>QAR</item>
+        <item>BHD</item>
+    </string-array>
 </resources>

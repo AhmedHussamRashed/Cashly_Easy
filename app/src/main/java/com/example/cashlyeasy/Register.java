@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-class Register extends AppCompatActivity {
+  public class Register extends AppCompatActivity {
 
     private EditText etFullName, etEmail, etPassword, etConfirmPassword;
     private Button btnRegister;
@@ -69,22 +69,22 @@ class Register extends AppCompatActivity {
         String confirmPassword = etConfirmPassword.getText().toString();
 
         if (TextUtils.isEmpty(fullName)) {
-            etFullName.setError("الرجاء إدخال الاسم الكامل");
+            etFullName.setError("Enter Your Name");
             return;
         }
 
         if (TextUtils.isEmpty(email)) {
-            etEmail.setError("الرجاء إدخال البريد الإلكتروني");
+            etEmail.setError("Enter Your Email");
             return;
         }
 
         if (TextUtils.isEmpty(password)) {
-            etPassword.setError("الرجاء إدخال كلمة المرور");
+            etPassword.setError("Enter Your Password");
             return;
         }
 
         if (!password.equals(confirmPassword)) {
-            etConfirmPassword.setError("كلمتا المرور غير متطابقتين");
+            etConfirmPassword.setError("The passwords do not match.");
             return;
         }
 

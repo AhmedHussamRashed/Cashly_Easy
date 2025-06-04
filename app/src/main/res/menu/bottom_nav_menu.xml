@@ -17,9 +17,9 @@
         android:title="Reports" />
 
     <item
-        android:id="@+id/navigation_requests"
+        android:id="@+id/navigation_bills"
         android:icon="@drawable/ic_nav_requests"
-        android:title="Requests" />
+        android:title="Bills" />
 
     <item
         android:id="@+id/navigation_account"

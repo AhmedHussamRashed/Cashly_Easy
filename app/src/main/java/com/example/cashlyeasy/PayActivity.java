@@ -30,11 +30,11 @@ public class PayActivity extends AppCompatActivity {
         btnProceedToPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // الحصول على القيم من حقول الإدخال (اختياري، يمكنك استخدامها في الرسالة)
+
                 String billerId = etBillerId.getText().toString().trim();
                 String amount = etBillAmount.getText().toString().trim();
 
-                // التحقق من أن الحقول ليست فارغة (اختياري)
+
                 if (billerId.isEmpty() || amount.isEmpty()) {
                     Toast.makeText(PayActivity.this, "Please enter Biller ID and Amount", Toast.LENGTH_SHORT).show();
                     return;

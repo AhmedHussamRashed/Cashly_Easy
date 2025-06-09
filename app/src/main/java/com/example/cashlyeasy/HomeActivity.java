@@ -2,7 +2,7 @@ package com.example.cashlyeasy;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem; // مهم جداً
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
         rvTransactions = findViewById(R.id.rvTransactions);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        // تأكد أن هذه الـ ids هي LinearLayout في xml
+
         sendButton = findViewById(R.id.send);
         requestButton = findViewById(R.id.request);
         payButton = findViewById(R.id.pay);

@@ -1,4 +1,4 @@
-package com.example.cashlyeasy; // استبدل باسم الحزمة الخاص بمشروعك
+package com.example.cashlyeasy;
 
 import androidx.appcompat.app.AppCompatActivity;
 

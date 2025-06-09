@@ -1,0 +1,17 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- الطبقة السفلية (الظل) -->
+    <path
+        android:fillColor="#40000000"
+        android:pathData="M5,5h14v14H5z"
+        android:translateX="1"
+        android:translateY="1"/>
+
+    <!-- الطبقة الرئيسية -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M4,4h3v3H4zM17,4h3v3h-3zM4,17h3v3H4zM7,7h2v2H7zM7,11h2v2H7zM11,7h2v2h-2zM11,15h2v2h-2zM15,7h2v2h-2zM15,11h2v2h-2zM15,15h2v2h-2zM9,7h2v8H9zM7,9h8v2H7zM13,11h2v4h-2zM11,13h4v2h-4z"/>
+</vector>

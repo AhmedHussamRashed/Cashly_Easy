@@ -27,16 +27,13 @@
         android:contentDescription="@string/warning_icon"
         android:layout_marginBottom="40dp" />
 
-
-
-
     <TextView
         android:id="@+id/errorMessage"
         android:layout_width="278dp"
         android:layout_height="136dp"
         android:layout_marginBottom="8dp"
         android:gravity="center"
-        android:text="خطــــأ"
+        android:text="Error"
         android:textColor="#1E2A3D"
         android:textSize="40sp"
         android:textStyle="bold" />
@@ -45,7 +42,7 @@
         android:id="@+id/tryAgainMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="حاول مرة أخرى"
+        android:text="Try Again"
         android:textColor="#1E2A3D"
         android:textSize="26sp"
         android:layout_marginBottom="32dp" />
@@ -54,7 +51,7 @@
         android:id="@+id/retryButton"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:text="أعد المحاولة"
+        android:text="Retry"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
         android:backgroundTint="#0A2540"

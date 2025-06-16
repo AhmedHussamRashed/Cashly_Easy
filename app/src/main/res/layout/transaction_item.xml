@@ -33,7 +33,7 @@
                 android:id="@+id/transactionTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="شراء من مول العرب"
+                android:text="Purchase from Mall of Arabia"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />

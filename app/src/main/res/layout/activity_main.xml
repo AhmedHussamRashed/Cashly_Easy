@@ -9,6 +9,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -30,16 +31,13 @@
             android:orientation="vertical"
             android:padding="16dp"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="#FFFFFF"
             android:gravity="end"
-            android:layoutDirection="rtl"
-            android:backgroundTintMode="src_in"
-            android:layout_gravity="end">
+            android:layoutDirection="rtl">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="الميزانيات"
+                android:text="Budgets"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#0D1B3E"/>
@@ -47,7 +45,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ملخص الإنفاق الشهري"
+                android:text="Monthly Spending Summary"
                 android:textColor="#999999"
                 android:textSize="14sp"/>
 
@@ -55,16 +53,22 @@
                 android:id="@+id/tv_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1,750 رس"
+                android:text="1,750 SAR"
                 android:textSize="24sp"
                 android:textColor="#0D1B3E"
                 android:textStyle="bold"
                 android:layout_marginTop="8dp"/>
         </LinearLayout>
 
-        <include layout="@layout/item_category_progress"/>
-        <include layout="@layout/item_category_progress"/>
-        <include layout="@layout/item_category_progress"/>
+        <include
+            android:id="@+id/item1"
+            layout="@layout/item_category_progress" />
+        <include
+            android:id="@+id/item2"
+            layout="@layout/item_category_progress" />
+        <include
+            android:id="@+id/item3"
+            layout="@layout/item_category_progress" />
 
     </LinearLayout>
 </ScrollView>

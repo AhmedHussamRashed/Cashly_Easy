@@ -6,9 +6,10 @@
     android:padding="12dp"
     android:background="#FFFFFF"
     android:layout_marginBottom="12dp"
+    android:progressDrawable="@drawable/progress_bar_colors"
     android:gravity="center_vertical">
 
-    <!-- رمز -->
+    <!-- Icon -->
     <ImageView
         android:id="@+id/img_icon"
         android:layout_width="40dp"
@@ -16,7 +17,7 @@
         android:src="@drawable/ic_food"
         android:layout_marginEnd="12dp" />
 
-    <!-- معلومات -->
+    <!-- Information -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -27,7 +28,7 @@
             android:id="@+id/tv_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="الطعام"
+            android:text="Food"
             android:textColor="#0D1B3E"
             android:textSize="16sp"
             android:textStyle="bold"/>
@@ -36,7 +37,7 @@
             android:id="@+id/tv_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1,200 / 1,500 رس"
+            android:text="1,200 / 1,500 SAR"
             android:textColor="#777777"
             android:textSize="14sp"
             android:layout_marginTop="4dp"/>

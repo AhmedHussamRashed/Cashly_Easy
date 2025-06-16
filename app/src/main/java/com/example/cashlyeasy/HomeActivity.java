@@ -25,27 +25,22 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // ربط عناصر الواجهة
         tvUserName = findViewById(R.id.tvUserName);
         tvBalanceAmount = findViewById(R.id.tvBalanceAmount);
         rvTransactions = findViewById(R.id.rvTransactions);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        // إعداد RecyclerView
         rvTransactions.setLayoutManager(new LinearLayoutManager(this));
         Toast.makeText(this, "تحتاج لإنشاء TransactionAdapter و Transaction Model", Toast.LENGTH_LONG).show();
 
-        // تعيين العنصر الحالي (Home)
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
 
-        // التعامل مع عناصر التنقل السفلي
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
 
                 if (itemId == R.id.navigation_home) {
-                    // نحن بالفعل في الصفحة الرئيسية
                     return true;
                 } else if (itemId == R.id.navigation_exchange) {
                     startActivity(new Intent(HomeActivity.this, Exchange.class));

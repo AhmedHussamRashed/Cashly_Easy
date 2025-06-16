@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textAlignment="center"
-            android:text="هل أنت متأكد من حذف الحساب؟"
+            android:text="Are you sure you want to delete the account?"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#000000"
@@ -37,7 +37,7 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/cairo"
             android:gravity="center"
-            android:text="هذه الحركة لا يمكن التراجع عنها"
+            android:text="This action cannot be undone"
             android:textAlignment="center"
             android:textColor="#666666"
             android:textSize="14sp" />
@@ -53,16 +53,16 @@
                 android:id="@+id/btn_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="إلغاء"
                 android:backgroundTint="#EEEEEE"
-                android:textColor="#000000"
-                android:fontFamily="@font/cairo" />
+                android:fontFamily="@font/cairo"
+                android:text="Cancel"
+                android:textColor="#000000" />
 
             <Button
                 android:id="@+id/btn_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="حـــذف"
+                android:text="Delete"
                 android:layout_marginStart="12dp"
                 android:backgroundTint="#E53935"
                 android:textColor="#FFFFFF"

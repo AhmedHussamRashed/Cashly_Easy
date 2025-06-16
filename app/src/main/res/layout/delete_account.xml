@@ -53,6 +53,7 @@
                 android:id="@+id/btn_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="80dp"
                 android:backgroundTint="#EEEEEE"
                 android:fontFamily="@font/cairo"
                 android:text="Cancel"
@@ -62,11 +63,12 @@
                 android:id="@+id/btn_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Delete"
                 android:layout_marginStart="12dp"
+                android:layout_marginLeft="60dp"
                 android:backgroundTint="#E53935"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/cairo" />
+                android:fontFamily="@font/cairo"
+                android:text="Delete"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

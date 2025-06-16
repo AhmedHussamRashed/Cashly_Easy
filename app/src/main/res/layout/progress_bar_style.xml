@@ -1,5 +1,4 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- الخلفية الرمادية -->
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
             <corners android:radius="50dp" />
@@ -7,7 +6,6 @@
         </shape>
     </item>
 
-    <!-- الجزء المملوء -->
     <item android:id="@android:id/progress">
         <clip>
             <shape android:shape="rectangle">

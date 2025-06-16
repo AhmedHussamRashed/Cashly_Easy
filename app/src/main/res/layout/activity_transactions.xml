@@ -9,6 +9,14 @@
     android:padding="20dp"
     tools:context=".TransactionsActivity">
 
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/logo" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,18 +24,9 @@
         android:gravity="center_vertical"
         android:layout_marginBottom="4dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Cashly"
-            android:textSize="42sp"
-            android:textStyle="bold"
-            android:textColor="#000000" />
-
         <ImageView
-            android:layout_width="46dp"
-            android:layout_height="match_parent"
+            android:layout_width="24dp"
+            android:layout_height="49dp"
             android:src="@drawable/ic_search"
             app:tint="@color/black" />
     </LinearLayout>

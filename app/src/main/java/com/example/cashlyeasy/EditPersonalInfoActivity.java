@@ -31,7 +31,6 @@ public class EditPersonalInfoActivity extends AppCompatActivity {
                 Toast.makeText(EditPersonalInfoActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(EditPersonalInfoActivity.this, "Changes saved!", Toast.LENGTH_SHORT).show();
-                // Here, you can implement saving the data (e.g., to a database or shared preferences)
             }
         });
     }

@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Cashly Easy</string>
+    <string name="default_web_client_id">ضع_هنا_قيمة_web_client_id</string>
+
 
     <string-array name="currency_array">
         <item>USD</item>

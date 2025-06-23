@@ -13,7 +13,7 @@
         android:id="@+id/tvLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="C Cashly"
+        android:text=" Cashly"
         android:textSize="34sp"
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
@@ -47,7 +47,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="البريد الإلكتروني"
+                android:text="Email"
                 android:textColor="@color/grey_text"
                 android:textSize="14sp" />
 
@@ -57,7 +57,7 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/edit_text_background"
-                android:hint="أدخل بريدك الإلكتروني"
+                android:hint="Enter Your Email"
                 android:inputType="textEmailAddress"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
@@ -68,7 +68,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="كلمة المرور"
+                android:text="Password"
                 android:textColor="@color/grey_text"
                 android:textSize="14sp"
                 android:layout_marginTop="16dp"/>
@@ -79,7 +79,7 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/edit_text_background"
-                android:hint="أدخل كلمة المرور"
+                android:hint="Enter Your Password"
                 android:inputType="textPassword"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
@@ -93,7 +93,7 @@
                 android:layout_height="55dp"
                 android:layout_marginTop="24dp"
                 android:backgroundTint="@color/button_blue"
-                android:text="تسجيل الدخول"
+                android:text="LOG IN"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -111,7 +111,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="نسيت كلمة المرور؟"
+                    android:text="Forget Password ?"
                     android:textColor="@color/grey_text"
                     android:textSize="14sp"
                     android:gravity="right"/>
@@ -121,7 +121,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="إنشاء حساب"
+                    android:text="Create An Account"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -136,7 +136,7 @@
         android:id="@+id/tvSocialLoginSeparator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="أو سجل الدخول بواسطة"
+        android:text="Or log in with"
         android:textColor="@color/grey_text"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@+id/cardLogin"
@@ -162,7 +162,7 @@
             android:layout_height="48dp"
             android:src="@drawable/ic_facebook"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="تسجيل الدخول بواسطة فيس بوك"
+            android:contentDescription="Facebook"
             android:layout_marginEnd="16dp"/>
 
         <!-- تويتر -->
@@ -172,7 +172,7 @@
             android:layout_height="48dp"
             android:src="@drawable/ic_twitter"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="تسجيل الدخول بواسطة تويتر"
+            android:contentDescription="Twitter"
             android:layout_marginEnd="16dp"/>
 
         <!-- جوجل -->
@@ -182,7 +182,7 @@
             android:layout_height="48dp"
             android:src="@drawable/ic_google"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="تسجيل الدخول بواسطة جوجل"/>
+            android:contentDescription="Google"/>
 
     </LinearLayout>
 

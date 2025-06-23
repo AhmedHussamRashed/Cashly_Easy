@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "872319553676",
+    "project_id": "cashly-easy",
+    "storage_bucket": "cashly-easy.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872319553676:android:0a11a76dcfc84be9c46ba9",
+        "android_client_info": {
+          "package_name": "com.example.cashlyeasy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "872319553676-si06ca36qjrrqks8urg8mjetoibbflhs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvswGpte52lRtneI4ScK-EuAJn7Wz2fIs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "872319553676-si06ca36qjrrqks8urg8mjetoibbflhs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

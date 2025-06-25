@@ -12,7 +12,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url "https://jitpack.io" } // Important
-        maven { url "https://cardinalcommerce.jfrog.io/artifactory/android" } // أضف هذا السطر
+        maven { url "https://cardinalcommerce.jfrog.io/artifactory/android" }
     }
 }
 

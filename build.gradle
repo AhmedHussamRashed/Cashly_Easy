@@ -3,10 +3,13 @@ buildscript {
         google()
         mavenCentral()
         maven { url "https://jitpack.io" }
+        maven { url "https://cardinalcommerceprod.jfrog.io/artifactory/android" }
+
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.10.1'
+        classpath 'com.android.tools.build:gradle:8.1.1'
         classpath 'com.google.gms:google-services:4.4.1'
+
     }
 }
 

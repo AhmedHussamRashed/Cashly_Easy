@@ -5,6 +5,10 @@ public class PaymentRequest {
     private double amount;
     private String description;
 
+    public PaymentRequest() {
+        // Default constructor for serialization
+    }
+
     public PaymentRequest(int userId, double amount, String description) {
         this.userId = userId;
         this.amount = amount;
@@ -15,11 +19,23 @@ public class PaymentRequest {
         return userId;
     }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public double getAmount() {
         return amount;
     }
 
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

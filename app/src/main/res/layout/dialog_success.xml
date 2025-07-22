@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/dialog_background"
+    android:gravity="center">
+
+    <ImageView
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/ic_success"
+        android:contentDescription="Success"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/text_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Payment completed successfully!"
+        android:textSize="16sp"
+        android:paddingTop="16dp"
+        android:textColor="@android:color/black"
+        android:gravity="center" />
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@android:color/white" />
+</LinearLayout>

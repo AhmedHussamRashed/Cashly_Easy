@@ -1,19 +1,25 @@
 package com.example.cashlyeasy;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +33,9 @@ public class HomeActivity extends AppCompatActivity {
     LinearLayout sendButton, requestButton, payButton, receiptsButton;
 
     TransactionAdapter transactionAdapter;
-    List<Transaction> transactionList;
+    List<Transaction> transactionList = new ArrayList<>();
+
+    String apiUrl = "http://192.168.1.10/api/payments"; // Laravel API endpoint
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,71 +47,119 @@ public class HomeActivity extends AppCompatActivity {
         rvTransactions = findViewById(R.id.rvTransactions);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-
         sendButton = findViewById(R.id.send);
         requestButton = findViewById(R.id.request);
         payButton = findViewById(R.id.pay);
         receiptsButton = findViewById(R.id.receipts);
 
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this, Send.class));
-            }
-        });
+        sendButton.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, Send.class)));
+        requestButton.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, Requests.class)));
+        payButton.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, PayActivity.class)));
+        receiptsButton.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, ReceiptsActivity.class)));
 
-        requestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this, Requests.class));
-            }
-        });
-
-        payButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this, PayActivity.class));
-            }
-        });
-
-        receiptsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this, ReceiptsActivity.class));
-            }
-        });
-
-        transactionList = new ArrayList<>();
-        transactionList.add(new Transaction("Electronic Store", "April 24", "3.2 Lag", 120.08, false, R.drawable.ic_store));
-        transactionList.add(new Transaction("Salary", "April 23", "1 day ago", 1500.00, true, R.drawable.salary));
-        transactionList.add(new Transaction("Coffee Shop", "April 22", "2 days ago", 5.50, false, R.drawable.coffee));
-
-        rvTransactions.setLayoutManager(new LinearLayoutManager(this));
         transactionAdapter = new TransactionAdapter(this, transactionList);
+        rvTransactions.setLayoutManager(new LinearLayoutManager(this));
         rvTransactions.setAdapter(transactionAdapter);
 
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
-
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-
-                if (itemId == R.id.navigation_home) {
-                    return true;
-                } else if (itemId == R.id.navigation_exchange) {
-                    startActivity(new Intent(HomeActivity.this, Exchange.class));
-                } else if (itemId == R.id.navigation_reports) {
-                    startActivity(new Intent(HomeActivity.this, ReportsActivity.class));
-                } else if (itemId == R.id.navigation_bills) {
-                    startActivity(new Intent(HomeActivity.this, BillsActivity.class));
-                } else if (itemId == R.id.navigation_account) {
-                    startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
-                }
-
-                overridePendingTransition(0, 0);
-                return true;
-            }
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) return true;
+            else if (itemId == R.id.navigation_exchange) startActivity(new Intent(this, Exchange.class));
+            else if (itemId == R.id.navigation_reports) startActivity(new Intent(this, ReportsActivity.class));
+            else if (itemId == R.id.navigation_bills) startActivity(new Intent(this, BillsActivity.class));
+            else if (itemId == R.id.navigation_account) startActivity(new Intent(this, ProfileActivity.class));
+            overridePendingTransition(0, 0);
+            return true;
         });
+
+        handlePayPalRedirect(getIntent());
+        fetchTransactions();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handlePayPalRedirect(intent);
+    }
+
+    private void handlePayPalRedirect(Intent intent) {
+        if (intent != null && Intent.ACTION_VIEW.equals(intent.getAction())) {
+            Uri data = intent.getData();
+            if (data != null && "com.example.cashlyeasy".equals(data.getScheme()) && "paypalpay".equals(data.getHost())) {
+                String paymentId = data.getQueryParameter("paymentId");
+                String token = data.getQueryParameter("token");
+                String payerId = data.getQueryParameter("PayerID");
+
+                if (paymentId != null && payerId != null) {
+                    Dialog dialog_success = new Dialog(this);
+                    dialog_success.setContentView(R.layout.dialog_success);
+                    dialog_success.setCancelable(true);
+                    dialog_success.findViewById(R.id.btn_ok).setOnClickListener(v -> dialog_success.dismiss());
+                    dialog_success.show();
+                } else {
+                    Dialog dialog_error = new Dialog(this);
+                    dialog_error.setContentView(R.layout.dialog_error);
+                    dialog_error.setCancelable(true);
+                    dialog_error.findViewById(R.id.buttonRetry).setOnClickListener(v -> dialog_error.dismiss());
+                    dialog_error.show();
+                }
+            }
+        }
+    }
+
+    private void fetchTransactions() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET,
+                apiUrl,
+                null,
+                response -> {
+                    try {
+                        transactionList.clear();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
+
+                            int id = obj.getInt("id");
+                            String type = obj.getString("type");
+                            double amount = obj.getDouble("amount");
+                            String description = obj.getString("description");
+                            String createdAt = obj.getString("created_at");
+
+                            Transaction transaction = new Transaction(id, type, amount, description, createdAt);
+                            transactionList.add(transaction);
+                        }
+                        transactionAdapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(this, "خطأ في تحليل البيانات", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                error -> {
+                    error.printStackTrace();
+                    Toast.makeText(this, "فشل الاتصال بالخادم", Toast.LENGTH_SHORT).show();
+                }
+        );
+
+        queue.add(request);
+
+
+        // استقبال بيانات من شاشة Send
+        Intent intent = getIntent();
+        if (intent.hasExtra("description") && intent.hasExtra("amount")) {
+            String description = intent.getStringExtra("description");
+            double amount = intent.getDoubleExtra("amount", 0);
+            String createdAt = intent.getStringExtra("created_at");
+
+            boolean isIncome = amount > 0;
+            String type = isIncome ? "income" : "expense";
+
+            // أنشئ المعاملة الجديدة وأضفها في بداية القائمة
+            Transaction newTransaction = new Transaction(0, type, amount, description, createdAt);
+            transactionList.add(0, newTransaction);
+            transactionAdapter.notifyItemInserted(0);
+            rvTransactions.scrollToPosition(0); // تمرير للأعلى لعرض العنصر الجديد
+        }
     }
 }

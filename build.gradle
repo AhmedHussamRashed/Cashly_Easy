@@ -4,22 +4,15 @@ buildscript {
         mavenCentral()
         maven { url "https://jitpack.io" }
         maven { url "https://cardinalcommerceprod.jfrog.io/artifactory/android" }
-
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.1'
-        classpath 'com.google.gms:google-services:4.4.1'
 
+    dependencies {
+
+        classpath 'com.android.tools.build:gradle:8.1.1'
     }
 }
 
-//plugins {
-//    // ...
-//
-//    // Add the dependency for the Google services Gradle plugin
-//    id 'com.google.gms.google-services' version '4.4.2' apply false
-//
-//}
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir

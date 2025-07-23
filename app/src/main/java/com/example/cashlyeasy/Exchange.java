@@ -1,5 +1,6 @@
 package com.example.cashlyeasy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -21,8 +22,8 @@ public class Exchange extends AppCompatActivity {
     private Spinner fromCurrencySpinner, toCurrencySpinner;
     private TextView exchangeRateValue, receiveAmount;
     private Button exchangeButton;
+    private BottomNavigationView bottomNavigationView;
 
-    // جدول أسعار الصرف الأساسية (مقابل 1 USD مثلاً)
     private final HashMap<String, Double> currencyRates = new HashMap<>();
 
     @Override
@@ -30,16 +31,14 @@ public class Exchange extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exchange);
 
-        // ربط العناصر
         editAmount = findViewById(R.id.editAmount);
         fromCurrencySpinner = findViewById(R.id.fromCurrencySpinner);
         toCurrencySpinner = findViewById(R.id.toCurrencySpinner);
         exchangeRateValue = findViewById(R.id.exchangeRateValue);
         receiveAmount = findViewById(R.id.receiveAmount);
         exchangeButton = findViewById(R.id.exchangeButton);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewExchange);
+        bottomNavigationView = findViewById(R.id.bottomNavigationViewExchange);
 
-        // تعريف العملات وأسعارها التقريبية
         currencyRates.put("USD", 1.0);
         currencyRates.put("EUR", 0.92);
         currencyRates.put("GBP", 0.78);
@@ -49,44 +48,48 @@ public class Exchange extends AppCompatActivity {
         currencyRates.put("EGP", 48.00);
         currencyRates.put("TRY", 32.50);
 
-        // إعداد السبينرات
         String[] currencies = currencyRates.keySet().toArray(new String[0]);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, currencies);
         fromCurrencySpinner.setAdapter(adapter);
         toCurrencySpinner.setAdapter(adapter);
 
-        // عند الضغط على زر التحويل
-        exchangeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String amountText = editAmount.getText().toString().trim();
-                if (amountText.isEmpty()) {
-                    editAmount.setError("Please enter an amount");
-                    return;
-                }
+        exchangeButton.setOnClickListener(v -> {
+            String amountText = editAmount.getText().toString().trim();
+            if (amountText.isEmpty()) {
+                editAmount.setError("Please enter an amount");
+                return;
+            }
 
-                try {
-                    double amount = Double.parseDouble(amountText);
-                    String fromCurrency = fromCurrencySpinner.getSelectedItem().toString();
-                    String toCurrency = toCurrencySpinner.getSelectedItem().toString();
+            try {
+                double amount = Double.parseDouble(amountText);
+                String fromCurrency = fromCurrencySpinner.getSelectedItem().toString();
+                String toCurrency = toCurrencySpinner.getSelectedItem().toString();
 
-                    double fromRate = currencyRates.get(fromCurrency);
-                    double toRate = currencyRates.get(toCurrency);
+                double fromRate = currencyRates.get(fromCurrency);
+                double toRate = currencyRates.get(toCurrency);
 
-                    double rate = toRate / fromRate; // سعر التحويل الفعلي
-                    double result = amount * rate;
+                double rate = toRate / fromRate;
+                double result = amount * rate;
 
-                    exchangeRateValue.setText("    1 " + fromCurrency + " = " + String.format("%.4f", rate) + " " + toCurrency);
-                    receiveAmount.setText("   " + toCurrency + " " + String.format("%.2f", result));
+                exchangeRateValue.setText("    1 " + fromCurrency + " = " + String.format("%.4f", rate) + " " + toCurrency);
+                receiveAmount.setText("   " + toCurrency + " " + String.format("%.2f", result));
 
-                    Toast.makeText(Exchange.this, "Converted successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Exchange.this, "Converted successfully!", Toast.LENGTH_SHORT).show();
 
-                } catch (NumberFormatException e) {
-                    editAmount.setError("Invalid number");
-                }
+            } catch (NumberFormatException e) {
+                editAmount.setError("Invalid number");
             }
         });
 
-        bottomNavigationView.setLabelVisibilityMode(BottomNavigationView.LABEL_VISIBILITY_LABELED);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_exchange);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) startActivity(new Intent(this, HomeActivity.class));
+            else if (itemId == R.id.navigation_reports) startActivity(new Intent(this, ReportsActivity.class));
+            else if (itemId == R.id.navigation_bills) startActivity(new Intent(this, BillsActivity.class));
+            else if (itemId == R.id.navigation_account) startActivity(new Intent(this, ProfileActivity.class));
+            overridePendingTransition(0, 0);
+            return true;
+        });
     }
 }

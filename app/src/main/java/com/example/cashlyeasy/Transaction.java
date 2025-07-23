@@ -2,13 +2,27 @@ package com.example.cashlyeasy;
 
 public class Transaction {
 
+    // بيانات قاعدة البيانات أو API
     private int id;
     private String type;
     private double amount;
     private String description;
     private String createdAt;
 
-    // Constructor
+    // بيانات العرض في الواجهة
+    private int iconResId;
+    private boolean isIncome;
+
+    // ✅ Constructor لواجهة المستخدم
+    public Transaction(String title, String date, double amount, int iconResId, boolean isIncome) {
+        this.description = title;
+        this.createdAt = date;
+        this.amount = amount;
+        this.iconResId = iconResId;
+        this.isIncome = isIncome;
+    }
+
+    // ✅ Constructor لقاعدة البيانات / API
     public Transaction(int id, String type, double amount, String description, String createdAt) {
         this.id = id;
         this.type = type;
@@ -17,17 +31,34 @@ public class Transaction {
         this.createdAt = createdAt;
     }
 
-    // Getters
+    // ✅ Getters للمستخدم في الواجهة
+    public boolean isIncome() {
+        return isIncome;
+    }
+
+    public int getIconResId() {
+        return iconResId;
+    }
+
+    public String getTitle() {
+        return description;
+    }
+
+    public String getDate() {
+        return createdAt;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    // ✅ Getters لقاعدة البيانات
     public int getId() {
         return id;
     }
 
     public String getType() {
         return type;
-    }
-
-    public double getAmount() {
-        return amount;
     }
 
     public String getDescription() {
@@ -38,7 +69,7 @@ public class Transaction {
         return createdAt;
     }
 
-    // Setters (اختياري إذا كنت ستعدل القيم لاحقًا)
+    // ✅ Setters (اختياري)
     public void setId(int id) {
         this.id = id;
     }
@@ -57,5 +88,13 @@ public class Transaction {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public void setIconResId(int iconResId) {
+        this.iconResId = iconResId;
+    }
+
+    public void setIncome(boolean income) {
+        isIncome = income;
     }
 }

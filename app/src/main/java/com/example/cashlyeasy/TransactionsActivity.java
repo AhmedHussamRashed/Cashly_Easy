@@ -21,13 +21,15 @@ public class TransactionsActivity extends AppCompatActivity {
         transactionRecyclerView = findViewById(R.id.transactionRecyclerView);
         transactionList = new ArrayList<>();
 
-        transactionList.add(new Transaction("بقالة", "23 أبريل", "-99.00", R.drawable.ic_groceries, false));
-        transactionList.add(new Transaction("Spotify", "22 أبريل", "-17.99", R.drawable.ic_spotify, false));
-        transactionList.add(new Transaction("الراتب", "21 أبريل", "+2500.00", R.drawable.ic_salary, true));
-        transactionList.add(new Transaction("مطعم", "19 أبريل", "-45.50", R.drawable.ic_restaurant, false));
-        transactionList.add(new Transaction("فريلانسر", "15 أبريل", "+750.00", R.drawable.ic_salary, true));
+        // ✅ تم تصحيح القيم: amount أصبحت double بدون علامات اقتباس
+        transactionList.add(new Transaction("بقالة", "23 أبريل", -99.00, R.drawable.ic_groceries, false));
+        transactionList.add(new Transaction("Spotify", "22 أبريل", -17.99, R.drawable.ic_spotify, false));
+        transactionList.add(new Transaction("الراتب", "21 أبريل", 2500.00, R.drawable.ic_salary, true));
+        transactionList.add(new Transaction("مطعم", "19 أبريل", -45.50, R.drawable.ic_restaurant, false));
+        transactionList.add(new Transaction("فريلانسر", "15 أبريل", 750.00, R.drawable.ic_salary, true));
 
-        adapter = new TransactionAdapter(transactionList);
+        // ✅ TransactionAdapter يتطلب Context + List<Transaction>
+        adapter = new TransactionAdapter(this, transactionList);
         transactionRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         transactionRecyclerView.setAdapter(adapter);
     }

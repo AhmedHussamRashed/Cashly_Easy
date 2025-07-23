@@ -28,11 +28,8 @@
         <activity android:name=".EditProfileActivity" android:exported="false" />
         <activity android:name=".ProfileActivity" android:exported="false" />
         <activity android:name=".Requests" android:exported="false" />
-        <activity android:name=".ProfileActivity" android:exported="false"
-            tools:ignore="DuplicateActivity" />
         <activity android:name=".ReportsActivity" android:exported="false" />
         <activity android:name=".Exchange" android:exported="false" />
-
         <activity android:name=".Register" android:exported="false" />
         <activity android:name=".LoginActivity" android:exported="false" />
 

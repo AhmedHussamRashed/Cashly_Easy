@@ -99,7 +99,7 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:weightSum="3"
-            android:gap="12dp">
+            android:layout_margin="12dp">
 
             <Button
                 android:id="@+id/btnEdit"

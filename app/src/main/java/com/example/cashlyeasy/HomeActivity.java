@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,12 +48,17 @@ public class HomeActivity extends AppCompatActivity {
         rvTransactions = findViewById(R.id.rvTransactions);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
+        ImageView ivUserAvatar = findViewById(R.id.ivUserAvatar);
+        ivUserAvatar.setOnClickListener(v -> {
+            startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+        });
+
         sendButton = findViewById(R.id.send);
         requestButton = findViewById(R.id.request);
         payButton = findViewById(R.id.pay);
         receiptsButton = findViewById(R.id.receipts);
 
-        sendButton.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, Send.class)));
+        sendButton.setOnClickListener(view -> startActivityForResult(new Intent(HomeActivity.this, Send.class), 100));
         requestButton.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, Requests.class)));
         payButton.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, PayActivity.class)));
         receiptsButton.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, ReceiptsActivity.class)));
@@ -78,9 +84,21 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        handlePayPalRedirect(intent);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
+            String description = data.getStringExtra("description");
+            double amount = data.getDoubleExtra("amount", 0);
+            String createdAt = data.getStringExtra("created_at");
+
+            boolean isIncome = amount > 0;
+            String type = isIncome ? "income" : "expense";
+
+            Transaction newTransaction = new Transaction(0, type, amount, description, createdAt);
+            transactionList.add(0, newTransaction);
+            transactionAdapter.notifyItemInserted(0);
+            rvTransactions.scrollToPosition(0);
+        }
     }
 
     private void handlePayPalRedirect(Intent intent) {
@@ -143,23 +161,5 @@ public class HomeActivity extends AppCompatActivity {
         );
 
         queue.add(request);
-
-
-        // استقبال بيانات من شاشة Send
-        Intent intent = getIntent();
-        if (intent.hasExtra("description") && intent.hasExtra("amount")) {
-            String description = intent.getStringExtra("description");
-            double amount = intent.getDoubleExtra("amount", 0);
-            String createdAt = intent.getStringExtra("created_at");
-
-            boolean isIncome = amount > 0;
-            String type = isIncome ? "income" : "expense";
-
-            // أنشئ المعاملة الجديدة وأضفها في بداية القائمة
-            Transaction newTransaction = new Transaction(0, type, amount, description, createdAt);
-            transactionList.add(0, newTransaction);
-            transactionAdapter.notifyItemInserted(0);
-            rvTransactions.scrollToPosition(0); // تمرير للأعلى لعرض العنصر الجديد
-        }
     }
 }

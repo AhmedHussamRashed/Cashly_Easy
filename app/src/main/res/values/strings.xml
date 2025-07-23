@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Cashly Easy</string>
     <string name="default_web_client_id">ضع_هنا_قيمة_web_client_id</string>
-
+    <string name="cashly">Cashly</string>
+    <string name="warning_icon">!</string>
+    <string name="_22">22</string>
+    <string name="_99_00">99.00</string>
 
     <string-array name="currency_array">
         <item>USD</item>

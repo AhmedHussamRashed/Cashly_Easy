@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class Send extends AppCompatActivity {
 
-    EditText recipientEditText, amountEditText;
+    EditText recipientEditText, amountEditText, descriptionEditText;
     Spinner currencySpinner;
     Button reviewButton;
     ImageView backButton;
@@ -39,9 +39,11 @@ public class Send extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send);
 
+        // ربط العناصر من XML
         recipientEditText = findViewById(R.id.recipientEditText);
         amountEditText = findViewById(R.id.amountEditText);
         currencySpinner = findViewById(R.id.currencySpinner);
+        descriptionEditText = findViewById(R.id.descriptionEditText);
         reviewButton = findViewById(R.id.reviewButton);
         backButton = findViewById(R.id.backButton);
 
@@ -51,33 +53,39 @@ public class Send extends AppCompatActivity {
             String recipient = recipientEditText.getText().toString().trim();
             String amountStr = amountEditText.getText().toString().trim();
             String currency = currencySpinner.getSelectedItem().toString();
+            String description = descriptionEditText.getText().toString().trim();
 
             boolean hasError = false;
 
             if (recipient.isEmpty()) {
-                recipientEditText.setError("هذا الحقل مطلوب");
+                recipientEditText.setError("This field is required");
                 hasError = true;
             }
 
             if (amountStr.isEmpty()) {
-                amountEditText.setError("هذا الحقل مطلوب");
+                amountEditText.setError("This field is required");
+                hasError = true;
+            }
+
+            if (description.isEmpty()) {
+                descriptionEditText.setError("Enter a description of the operation.");
                 hasError = true;
             }
 
             if (!hasError) {
                 try {
                     double amount = Double.parseDouble(amountStr);
-                    sendTransactionToApi(recipient, -Math.abs(amount), currency);
+                    sendTransactionToApi(recipient, -Math.abs(amount), currency, description);
                 } catch (NumberFormatException e) {
-                    showErrorDialog("المبلغ غير صالح");
+                    showErrorDialog("Invalid amount");
                 }
             }
         });
     }
 
-    private void sendTransactionToApi(String recipient, double amount, String currency) {
+    private void sendTransactionToApi(String recipient, double amount, String currency, String description) {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("جارٍ إرسال العملية...");
+        progressDialog.setMessage("Sending the operation...");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
@@ -90,31 +98,28 @@ public class Send extends AppCompatActivity {
                         boolean status = jsonResponse.optBoolean("status", false);
 
                         if (status) {
-                            // العملية نجحت
                             JSONObject paymentData = jsonResponse.optJSONObject("data");
-                            String createdAt = (paymentData != null) ? paymentData.optString("created_at", "الآن") : "الآن";
+                            String createdAt = (paymentData != null) ? paymentData.optString("created_at", "Now") : "Now";
 
-                            showSuccessDialog(recipient, amount, createdAt);
+                            showSuccessDialog(description, amount, createdAt);
                         } else {
-                            // فشل العملية مع رسالة من السيرفر
-                            String message = jsonResponse.optString("message", "فشل الإرسال");
+                            String message = jsonResponse.optString("message", "Sending failed");
                             showErrorDialog(message);
                         }
                     } catch (JSONException e) {
-                        showErrorDialog("خطأ في تحليل الاستجابة");
+                        showErrorDialog("Response parsing error");
                     }
                 },
                 error -> {
                     progressDialog.dismiss();
-                    showErrorDialog("فشل الاتصال بالخادم");
+                    showErrorDialog("Response parsing error");
                 }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("description", "Send to: " + recipient);
+                params.put("description", description);
                 params.put("amount", String.valueOf(amount));
                 params.put("currency", currency);
-                // ✅ يمكننا إضافة user_id ثابت إذا أردنا (مثلاً 1)
                 params.put("user_id", "1");
                 return params;
             }
@@ -130,14 +135,14 @@ public class Send extends AppCompatActivity {
         Volley.newRequestQueue(this).add(request);
     }
 
-    private void showSuccessDialog(String recipient, double amount, String createdAt) {
+    private void showSuccessDialog(String description, double amount, String createdAt) {
         Dialog dialog = new Dialog(Send.this);
         dialog.setContentView(R.layout.dialog_success);
         dialog.setCancelable(true);
         dialog.findViewById(R.id.btn_ok).setOnClickListener(view -> {
             dialog.dismiss();
             Intent intent = new Intent(Send.this, HomeActivity.class);
-            intent.putExtra("description", "Send to: " + recipient);
+            intent.putExtra("description", description);
             intent.putExtra("amount", amount);
             intent.putExtra("created_at", createdAt);
             startActivity(intent);

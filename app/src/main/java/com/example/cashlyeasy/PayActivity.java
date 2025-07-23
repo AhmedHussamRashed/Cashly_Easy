@@ -1,19 +1,21 @@
 package com.example.cashlyeasy;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AlertDialog;
-
-import android.content.DialogInterface;
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class PayActivity extends AppCompatActivity {
 
-    private EditText etBillerId;
-    private EditText etBillAmount;
+    private LinearLayout optionBill, optionQR;
+    private EditText etBillerId, etBillAmount, etBillDiscription;
     private Button btnProceedToPay;
 
     @Override
@@ -21,59 +23,64 @@ public class PayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay);
 
-        // ربط عناصر الواجهة
+        // ربط المكونات
+        optionBill = findViewById(R.id.optionBill);
+        optionQR = findViewById(R.id.optionQR);
         etBillerId = findViewById(R.id.etBillerId);
         etBillAmount = findViewById(R.id.etBillAmount);
+        etBillDiscription = findViewById(R.id.etBillDiscription);
         btnProceedToPay = findViewById(R.id.btnProceedToPay);
 
-        // إضافة مستمع النقر لزر الدفع
-        btnProceedToPay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        // عند الضغط على Pay Bill → الانتقال للهوم
+        optionBill.setOnClickListener(v -> {
+            Intent intent = new Intent(PayActivity.this, HomeActivity.class);
+            intent.putExtra("open_from", "pay_bill");
+            startActivity(intent);
+        });
 
-                String billerId = etBillerId.getText().toString().trim();
-                String amount = etBillAmount.getText().toString().trim();
+        // عند الضغط على Scan QR → عرض دايلوج يحتوي على QR أيقونة
+        optionQR.setOnClickListener(v -> showQRDialog());
 
+        // عند الضغط على زر الدفع → التحقق من البيانات ثم إرسالها للهوم
+        btnProceedToPay.setOnClickListener(v -> {
+            String billerId = etBillerId.getText().toString().trim();
+            String amount = etBillAmount.getText().toString().trim();
+            String description = etBillDiscription.getText().toString().trim();
 
-                if (billerId.isEmpty() || amount.isEmpty()) {
-                    Toast.makeText(PayActivity.this, "Please enter Biller ID and Amount", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                // إظهار مربع حوار تأكيد الدفع عبر باي بال
-                showPayPalConfirmationDialog(billerId, amount);
+            if (billerId.isEmpty()) {
+                etBillerId.setError("Enter Biller ID");
+                return;
             }
+            if (amount.isEmpty()) {
+                etBillAmount.setError("Enter Amount");
+                return;
+            }
+            if (description.isEmpty()) {
+                etBillDiscription.setError("Enter Description");
+                return;
+            }
+
+            // نقل البيانات للهوم
+            Intent intent = new Intent(PayActivity.this, HomeActivity.class);
+            intent.putExtra("biller_id", billerId);
+            intent.putExtra("amount", amount);
+            intent.putExtra("description", description);
+            startActivity(intent);
+            Toast.makeText(this, "Payment details sent to Home", Toast.LENGTH_SHORT).show();
+            finish();
         });
     }
 
-    private void showPayPalConfirmationDialog(String billerId, String amount) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirm PayPal Payment");
-        builder.setMessage("Do you want to pay " + amount + " for Biller ID: " + billerId + " using PayPal?");
+    // دالة عرض دايلوج QR
+    private void showQRDialog() {
+        Dialog dialog = new Dialog(PayActivity.this);
+        dialog.setContentView(R.layout.dialog_qr);
 
-        // زر "Pay with PayPal"
-        builder.setPositiveButton("Pay with PayPal", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // هنا تضع الكود الخاص ببدء عملية الدفع الفعلية عبر PayPal SDK
-                // حاليًا، سنعرض رسالة توست مؤقتة
-                Toast.makeText(PayActivity.this, "Initiating PayPal payment...", Toast.LENGTH_SHORT).show();
-                dialog.dismiss(); // إغلاق مربع الحوار بعد النقر
-            }
-        });
+        ImageView qrIcon = dialog.findViewById(R.id.qrIcon);
+        Button btnClose = dialog.findViewById(R.id.btnClose);
 
-        // زر "Cancel"
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // إلغاء العملية وإغلاق مربع الحوار
-                dialog.dismiss();
-            }
-        });
+        btnClose.setOnClickListener(v -> dialog.dismiss());
 
-        // إنشاء وإظهار مربع الحوار
-        AlertDialog dialog = builder.create();
         dialog.show();
     }
 }
-

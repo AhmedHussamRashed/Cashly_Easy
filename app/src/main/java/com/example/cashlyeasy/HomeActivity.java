@@ -58,23 +58,40 @@ public class HomeActivity extends AppCompatActivity {
         payButton = findViewById(R.id.pay);
         receiptsButton = findViewById(R.id.receipts);
 
-        sendButton.setOnClickListener(view -> startActivityForResult(new Intent(HomeActivity.this, Send.class), 100));
-        requestButton.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, Requests.class)));
-        payButton.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, PayActivity.class)));
-        receiptsButton.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, ReceiptsActivity.class)));
+        // فتح شاشة الإرسال
+        sendButton.setOnClickListener(view ->
+                startActivityForResult(new Intent(HomeActivity.this, Send.class), 100));
 
+        // فتح شاشة الطلب
+        requestButton.setOnClickListener(view ->
+                startActivityForResult(new Intent(HomeActivity.this, Requests.class), 101));
+
+        // فتح شاشة الدفع
+        payButton.setOnClickListener(view ->
+                startActivityForResult(new Intent(HomeActivity.this, PayActivity.class), 102));
+
+        // فتح شاشة الإيصالات
+        receiptsButton.setOnClickListener(view ->
+                startActivity(new Intent(HomeActivity.this, ReceiptsActivity.class)));
+
+        // RecyclerView إعداد
         transactionAdapter = new TransactionAdapter(this, transactionList);
         rvTransactions.setLayoutManager(new LinearLayoutManager(this));
         rvTransactions.setAdapter(transactionAdapter);
 
+        // Bottom Navigation
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) return true;
-            else if (itemId == R.id.navigation_exchange) startActivity(new Intent(this, Exchange.class));
-            else if (itemId == R.id.navigation_reports) startActivity(new Intent(this, ReportsActivity.class));
-            else if (itemId == R.id.navigation_bills) startActivity(new Intent(this, BillsActivity.class));
-            else if (itemId == R.id.navigation_account) startActivity(new Intent(this, ProfileActivity.class));
+            else if (itemId == R.id.navigation_exchange)
+                startActivity(new Intent(this, Exchange.class));
+            else if (itemId == R.id.navigation_reports)
+                startActivity(new Intent(this, ReportsActivity.class));
+            else if (itemId == R.id.navigation_bills)
+                startActivity(new Intent(this, BillsActivity.class));
+            else if (itemId == R.id.navigation_account)
+                startActivity(new Intent(this, ProfileActivity.class));
             overridePendingTransition(0, 0);
             return true;
         });
@@ -86,13 +103,18 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
+
+        if ((requestCode == 100 || requestCode == 101 || requestCode == 102) && resultCode == RESULT_OK && data != null) {
             String description = data.getStringExtra("description");
             double amount = data.getDoubleExtra("amount", 0);
             String createdAt = data.getStringExtra("created_at");
 
-            boolean isIncome = amount > 0;
-            String type = isIncome ? "income" : "expense";
+            String type;
+            if (requestCode == 101) {
+                type = "income";  // Request → دخل
+            } else {
+                type = "expense"; // Send أو Pay → مصروف
+            }
 
             Transaction newTransaction = new Transaction(0, type, amount, description, createdAt);
             transactionList.add(0, newTransaction);
@@ -151,12 +173,12 @@ public class HomeActivity extends AppCompatActivity {
                         transactionAdapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Toast.makeText(this, "خطأ في تحليل البيانات", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Data Analysis Error", Toast.LENGTH_SHORT).show();
                     }
                 },
                 error -> {
                     error.printStackTrace();
-                    Toast.makeText(this, "فشل الاتصال بالخادم", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Failed To Connect To Server", Toast.LENGTH_SHORT).show();
                 }
         );
 

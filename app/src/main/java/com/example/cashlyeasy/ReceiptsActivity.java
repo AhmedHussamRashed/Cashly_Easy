@@ -64,7 +64,7 @@ public class ReceiptsActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // يمكنك إضافة مستمع للـ BottomNavigationView هنا إذا قمت بإضافته في الـ XML
+
 
     }
 

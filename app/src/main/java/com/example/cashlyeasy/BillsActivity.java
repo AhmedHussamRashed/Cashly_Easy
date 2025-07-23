@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -19,7 +18,6 @@ import java.util.List;
 
 public class BillsActivity extends AppCompatActivity {
 
-    private TextView textViewScreenTitle;
     private TabLayout tabLayout;
     private RecyclerView recyclerViewBills;
     private BottomNavigationView bottomNavigationViewBills;
@@ -27,15 +25,13 @@ public class BillsActivity extends AppCompatActivity {
     private List<Bill> allBills = new ArrayList<>();
     private List<Bill> displayedBills = new ArrayList<>();
 
-    private BillAdapter billAdapter; // تأكد من وجود هذا الكلاس
+    private BillAdapter billAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bills);
 
-        // Initialize Views
-        textViewScreenTitle = findViewById(R.id.textViewScreenTitle);
         tabLayout = findViewById(R.id.tabLayout);
         recyclerViewBills = findViewById(R.id.recyclerViewBills);
         bottomNavigationViewBills = findViewById(R.id.bottomNavigationViewBills);
@@ -43,12 +39,19 @@ public class BillsActivity extends AppCompatActivity {
         setupRecyclerView();
         setupTabs();
         setupBottomNavigation();
-        loadBillData(); // Load initial data
+        loadBillData();
     }
 
     private void setupRecyclerView() {
         recyclerViewBills.setLayoutManager(new LinearLayoutManager(this));
-        billAdapter = new BillAdapter(displayedBills, this); // تأكد من أن BillAdapter يأخذ السياق
+        billAdapter = new BillAdapter(displayedBills, this, bill -> {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("description", bill.title);
+            resultIntent.putExtra("amount", Double.parseDouble(bill.amount.replace("$", "")));
+            resultIntent.putExtra("created_at", bill.dueDate);
+            setResult(RESULT_OK, resultIntent);
+            finish();
+        });
         recyclerViewBills.setAdapter(billAdapter);
     }
 
@@ -63,10 +66,10 @@ public class BillsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) { }
+            public void onTabUnselected(TabLayout.Tab tab) {}
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) { }
+            public void onTabReselected(TabLayout.Tab tab) {}
         });
     }
 
@@ -80,7 +83,7 @@ public class BillsActivity extends AppCompatActivity {
                     startActivity(new Intent(BillsActivity.this, HomeActivity.class));
                     return true;
                 } else if (itemId == R.id.navigation_bills) {
-                    return true; // You are already in BillsActivity
+                    return true;
                 } else if (itemId == R.id.navigation_account) {
                     startActivity(new Intent(BillsActivity.this, ProfileActivity.class));
                     return true;
@@ -106,7 +109,7 @@ public class BillsActivity extends AppCompatActivity {
         allBills.add(new Bill("Credit Card", "Paid May 20", "$500.00", false));
         allBills.add(new Bill("Rent", "Paid May 01", "$1200.00", false));
 
-        filterBills(0); // Show Upcoming by default
+        filterBills(0);
     }
 
     private void filterBills(int tabPosition) {

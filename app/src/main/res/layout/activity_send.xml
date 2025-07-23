@@ -19,7 +19,7 @@
             android:src="@drawable/ic_arrow_back"
             android:layout_gravity="start"
             android:contentDescription="Back"
-            android:padding="4dp"/>
+            android:padding="4dp" />
 
         <!-- عنوان -->
         <TextView
@@ -81,17 +81,17 @@
                     android:padding="12dp" />
             </LinearLayout>
 
-            <!-- حقل المصدر -->
+            <!-- حقل الوصف -->
             <EditText
+                android:id="@+id/descriptionEditText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="12dp"
-                android:text="Discription"
-                android:enabled="false"
+                android:hint="Enter Description"
                 android:background="@drawable/rounded_input"
                 android:padding="12dp"
-                android:textColor="#001C48"
-                android:textStyle="bold"/>
+                android:textDirection="rtl"
+                android:inputType="textCapSentences" />
         </LinearLayout>
 
         <!-- زر مراجعة التحويل -->
@@ -105,6 +105,6 @@
             android:layout_marginTop="32dp"
             android:padding="16dp"
             android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>

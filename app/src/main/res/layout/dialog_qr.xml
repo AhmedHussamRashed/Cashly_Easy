@@ -11,7 +11,7 @@
         android:id="@+id/qrIcon"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/ic_QR"
+        android:src="@drawable/ic_scan_qr"
         android:contentDescription="QR Icon" />
 
     <Button

@@ -39,7 +39,6 @@ public class Send extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send);
 
-        // ربط العناصر من XML
         recipientEditText = findViewById(R.id.recipientEditText);
         amountEditText = findViewById(R.id.amountEditText);
         currencySpinner = findViewById(R.id.currencySpinner);
@@ -58,17 +57,17 @@ public class Send extends AppCompatActivity {
             boolean hasError = false;
 
             if (recipient.isEmpty()) {
-                recipientEditText.setError("This field is required");
+                recipientEditText.setError("هذا الحقل مطلوب");
                 hasError = true;
             }
 
             if (amountStr.isEmpty()) {
-                amountEditText.setError("This field is required");
+                amountEditText.setError("هذا الحقل مطلوب");
                 hasError = true;
             }
 
             if (description.isEmpty()) {
-                descriptionEditText.setError("Enter a description of the operation.");
+                descriptionEditText.setError("أدخل وصف العملية");
                 hasError = true;
             }
 
@@ -77,7 +76,7 @@ public class Send extends AppCompatActivity {
                     double amount = Double.parseDouble(amountStr);
                     sendTransactionToApi(recipient, -Math.abs(amount), currency, description);
                 } catch (NumberFormatException e) {
-                    showErrorDialog("Invalid amount");
+                    showErrorDialog("المبلغ غير صالح");
                 }
             }
         });
@@ -85,7 +84,7 @@ public class Send extends AppCompatActivity {
 
     private void sendTransactionToApi(String recipient, double amount, String currency, String description) {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Sending the operation...");
+        progressDialog.setMessage("جارٍ إرسال العملية...");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
@@ -94,25 +93,24 @@ public class Send extends AppCompatActivity {
                     progressDialog.dismiss();
                     try {
                         JSONObject jsonResponse = new JSONObject(response);
-
                         boolean status = jsonResponse.optBoolean("status", false);
 
                         if (status) {
                             JSONObject paymentData = jsonResponse.optJSONObject("data");
-                            String createdAt = (paymentData != null) ? paymentData.optString("created_at", "Now") : "Now";
+                            String createdAt = (paymentData != null) ? paymentData.optString("created_at", "الآن") : "الآن";
 
                             showSuccessDialog(description, amount, createdAt);
                         } else {
-                            String message = jsonResponse.optString("message", "Sending failed");
+                            String message = jsonResponse.optString("message", "فشل الإرسال");
                             showErrorDialog(message);
                         }
                     } catch (JSONException e) {
-                        showErrorDialog("Response parsing error");
+                        showErrorDialog("خطأ في تحليل الاستجابة");
                     }
                 },
                 error -> {
                     progressDialog.dismiss();
-                    showErrorDialog("Response parsing error");
+                    showErrorDialog("فشل الاتصال بالسيرفر. تحقق من الشبكة");
                 }) {
             @Override
             protected Map<String, String> getParams() {
@@ -120,7 +118,7 @@ public class Send extends AppCompatActivity {
                 params.put("description", description);
                 params.put("amount", String.valueOf(amount));
                 params.put("currency", currency);
-                params.put("user_id", "1");
+                params.put("user_id", "1"); // افتراضياً المستخدم 1
                 return params;
             }
 

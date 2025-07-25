@@ -1,11 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- ستايل للسويتش -->
     <style name="LargeSwitchStyle" parent="Theme.AppCompat.Light">
         <item name="android:minWidth">64dp</item>
         <item name="android:minHeight">48dp</item>
         <item name="android:switchMinWidth">64dp</item>
         <item name="android:thumbTextPadding">16dp</item>
+    </style>
+
+    <!-- ستايل للأزرار الرئيسية في الواجهة -->
+    <style name="ActionButtonStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/action_button_background</item>
+        <item name="android:layout_margin">4dp</item>
+    </style>
+
+    <!-- ستايل لنص الأزرار -->
+    <style name="ActionButtonText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginTop">4dp</item>
     </style>
 
 </resources>

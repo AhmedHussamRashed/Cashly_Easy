@@ -1,6 +1,7 @@
 package com.example.cashlyeasy;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -21,6 +22,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        SharedPreferences prefs = getSharedPreferences("UserData", MODE_PRIVATE);
+        if (prefs.contains("email") && prefs.contains("password")) {
+            goToHome();
+        }
+
         // Bind UI elements
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
@@ -34,8 +40,12 @@ public class LoginActivity extends AppCompatActivity {
             String password = etPassword.getText().toString().trim();
 
             if (validateInput(email, password)) {
-                // Dummy credentials check (replace with real API later)
-                if (email.equals("admin@example.com") && password.equals("123456")) {
+                //  جلب البيانات المخزنة والتحقق
+                String savedEmail = prefs.getString("email", null);
+                String savedPassword = prefs.getString("password", null);
+
+                if (savedEmail != null && savedPassword != null &&
+                        email.equals(savedEmail) && password.equals(savedPassword)) {
                     goToHome();
                 } else {
                     Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();

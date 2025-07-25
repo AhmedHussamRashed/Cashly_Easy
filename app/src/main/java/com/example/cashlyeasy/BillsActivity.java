@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -45,12 +47,17 @@ public class BillsActivity extends AppCompatActivity {
     private void setupRecyclerView() {
         recyclerViewBills.setLayoutManager(new LinearLayoutManager(this));
         billAdapter = new BillAdapter(displayedBills, this, bill -> {
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("description", bill.title);
-            resultIntent.putExtra("amount", Double.parseDouble(bill.amount.replace("$", "")));
-            resultIntent.putExtra("created_at", bill.dueDate);
-            setResult(RESULT_OK, resultIntent);
-            finish();
+            try {
+                double amount = Double.parseDouble(bill.amount.replace("$", ""));
+                String description = "Bill Payment: " + bill.title;
+                String createdAt = bill.dueDate;
+
+                // عرض Dialog النجاح
+                showSuccessDialog(description, amount, createdAt);
+
+            } catch (Exception e) {
+                showErrorDialog("حدث خطأ أثناء معالجة الفاتورة");
+            }
         });
         recyclerViewBills.setAdapter(billAdapter);
     }
@@ -125,5 +132,35 @@ public class BillsActivity extends AppCompatActivity {
         if (billAdapter != null) {
             billAdapter.notifyDataSetChanged();
         }
+    }
+
+    //  Dialog النجاح
+    private void showSuccessDialog(String description, double amount, String createdAt) {
+        Dialog dialog = new Dialog(BillsActivity.this);
+        dialog.setContentView(R.layout.dialog_success);
+        dialog.setCancelable(true);
+        dialog.findViewById(R.id.btn_ok).setOnClickListener(view -> {
+            dialog.dismiss();
+            Intent intent = new Intent(BillsActivity.this, HomeActivity.class);
+            intent.putExtra("description", description);
+            intent.putExtra("amount", amount);
+            intent.putExtra("created_at", createdAt);
+            setResult(RESULT_OK, intent);
+            finish();
+        });
+        dialog.show();
+    }
+
+    //  Dialog الخطأ
+    private void showErrorDialog(String message) {
+        Dialog errorDialog = new Dialog(BillsActivity.this);
+        errorDialog.setContentView(R.layout.dialog_error);
+        errorDialog.setCancelable(true);
+        TextView errorMsg = errorDialog.findViewById(R.id.errorMessage);
+        if (errorMsg != null) {
+            errorMsg.setText(message);
+        }
+        errorDialog.findViewById(R.id.buttonRetry).setOnClickListener(view -> errorDialog.dismiss());
+        errorDialog.show();
     }
 }

@@ -1,13 +1,14 @@
 package com.example.cashlyeasy;
 
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,13 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +40,10 @@ public class HomeActivity extends AppCompatActivity {
     List<Transaction> transactionList = new ArrayList<>();
 
     String apiUrl = "http://192.168.1.10/api/payments"; // Laravel API endpoint
+    SharedPreferences sharedPreferences;
+
+    double currentBalance = 5250.00; // Default balance if no saved data
+    DecimalFormat df = new DecimalFormat("#,###.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,38 +55,28 @@ public class HomeActivity extends AppCompatActivity {
         rvTransactions = findViewById(R.id.rvTransactions);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
+        sharedPreferences = getSharedPreferences("CashlyData", MODE_PRIVATE);
+
+        // تحميل البيانات المحفوظة
+        loadSavedData();
+
         ImageView ivUserAvatar = findViewById(R.id.ivUserAvatar);
-        ivUserAvatar.setOnClickListener(v -> {
-            startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
-        });
+        ivUserAvatar.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, ProfileActivity.class)));
 
         sendButton = findViewById(R.id.send);
         requestButton = findViewById(R.id.request);
         payButton = findViewById(R.id.pay);
         receiptsButton = findViewById(R.id.receipts);
 
-        // فتح شاشة الإرسال
-        sendButton.setOnClickListener(view ->
-                startActivityForResult(new Intent(HomeActivity.this, Send.class), 100));
+        sendButton.setOnClickListener(view -> startActivityForResult(new Intent(HomeActivity.this, Send.class), 100));
+        requestButton.setOnClickListener(view -> startActivityForResult(new Intent(HomeActivity.this, Requests.class), 101));
+        payButton.setOnClickListener(view -> startActivityForResult(new Intent(HomeActivity.this, PayActivity.class), 102));
+        receiptsButton.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, ReceiptsActivity.class)));
 
-        // فتح شاشة الطلب
-        requestButton.setOnClickListener(view ->
-                startActivityForResult(new Intent(HomeActivity.this, Requests.class), 101));
-
-        // فتح شاشة الدفع
-        payButton.setOnClickListener(view ->
-                startActivityForResult(new Intent(HomeActivity.this, PayActivity.class), 102));
-
-        // فتح شاشة الإيصالات
-        receiptsButton.setOnClickListener(view ->
-                startActivity(new Intent(HomeActivity.this, ReceiptsActivity.class)));
-
-        // RecyclerView إعداد
         transactionAdapter = new TransactionAdapter(this, transactionList);
         rvTransactions.setLayoutManager(new LinearLayoutManager(this));
         rvTransactions.setAdapter(transactionAdapter);
 
-        // Bottom Navigation
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
@@ -89,7 +86,7 @@ public class HomeActivity extends AppCompatActivity {
             else if (itemId == R.id.navigation_reports)
                 startActivity(new Intent(this, ReportsActivity.class));
             else if (itemId == R.id.navigation_bills)
-                startActivity(new Intent(this, BillsActivity.class));
+                startActivityForResult(new Intent(this, BillsActivity.class), 103);
             else if (itemId == R.id.navigation_account)
                 startActivity(new Intent(this, ProfileActivity.class));
             overridePendingTransition(0, 0);
@@ -97,30 +94,126 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         handlePayPalRedirect(getIntent());
-        fetchTransactions();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ((requestCode == 100 || requestCode == 101 || requestCode == 102) && resultCode == RESULT_OK && data != null) {
+        if ((requestCode == 100 || requestCode == 101 || requestCode == 102 || requestCode == 103)
+                && resultCode == RESULT_OK && data != null) {
+
             String description = data.getStringExtra("description");
             double amount = data.getDoubleExtra("amount", 0);
             String createdAt = data.getStringExtra("created_at");
 
             String type;
             if (requestCode == 101) {
-                type = "income";  // Request → دخل
+                type = "income";  // طلب → دخل
+                currentBalance += amount; // زيادة الرصيد
             } else {
-                type = "expense"; // Send أو Pay → مصروف
+                type = "expense"; // إرسال أو دفع → مصروف
+                if (currentBalance >= amount) {
+                    currentBalance -= amount; // خصم من الرصيد
+                } else {
+                    showErrorDialog("رصيدك غير كافٍ لإتمام العملية");
+                    return;
+                }
             }
+
+            // تحديث الرصيد مع الأنيميشن
+            tvBalanceAmount.setText("$ " + df.format(currentBalance));
+            ObjectAnimator animator = ObjectAnimator.ofFloat(tvBalanceAmount, "alpha", 0f, 1f);
+            animator.setDuration(500);
+            animator.start();
 
             Transaction newTransaction = new Transaction(0, type, amount, description, createdAt);
             transactionList.add(0, newTransaction);
             transactionAdapter.notifyItemInserted(0);
             rvTransactions.scrollToPosition(0);
+
+            saveData();
+
+            // إرسال المعاملة للسيرفر
+            sendTransactionToServer(type, amount, description);
         }
+    }
+
+    private void loadSavedData() {
+        currentBalance = Double.longBitsToDouble(sharedPreferences.getLong("balance", Double.doubleToLongBits(5250.00)));
+        tvBalanceAmount.setText("$ " + df.format(currentBalance));
+
+        String transactionsJson = sharedPreferences.getString("transactions", "[]");
+        try {
+            JSONArray jsonArray = new JSONArray(transactionsJson);
+            transactionList.clear();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                Transaction t = new Transaction(0, obj.getString("type"), obj.getDouble("amount"), obj.getString("description"), obj.getString("created_at"));
+                transactionList.add(t);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveData() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong("balance", Double.doubleToLongBits(currentBalance));
+
+        JSONArray jsonArray = new JSONArray();
+        for (Transaction t : transactionList) {
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("type", t.getType());
+                obj.put("amount", t.getAmount());
+                obj.put("description", t.getDescription());
+                obj.put("created_at", t.getCreatedAt());
+                jsonArray.put(obj);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        editor.putString("transactions", jsonArray.toString());
+        editor.apply();
+    }
+
+    private void sendTransactionToServer(String type, double amount, String description) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        JSONObject data = new JSONObject();
+        try {
+            data.put("type", type);
+            data.put("amount", amount);
+            data.put("description", description);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, apiUrl, data,
+                response -> showSuccessDialog(),
+                error -> showErrorDialog("فشل في إرسال البيانات للسيرفر"));
+        queue.add(request);
+    }
+
+    private void showSuccessDialog() {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_success);
+        dialog.setCancelable(true);
+        dialog.findViewById(R.id.btn_ok).setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
+    }
+
+    private void showErrorDialog(String message) {
+        Dialog errorDialog = new Dialog(this);
+        errorDialog.setContentView(R.layout.dialog_error);
+        errorDialog.setCancelable(true);
+        TextView errorMsg = errorDialog.findViewById(R.id.errorMessage);
+        if (errorMsg != null) {
+            errorMsg.setText(message);
+        }
+        errorDialog.findViewById(R.id.buttonRetry).setOnClickListener(view -> errorDialog.dismiss());
+        errorDialog.show();
     }
 
     private void handlePayPalRedirect(Intent intent) {
@@ -132,56 +225,11 @@ public class HomeActivity extends AppCompatActivity {
                 String payerId = data.getQueryParameter("PayerID");
 
                 if (paymentId != null && payerId != null) {
-                    Dialog dialog_success = new Dialog(this);
-                    dialog_success.setContentView(R.layout.dialog_success);
-                    dialog_success.setCancelable(true);
-                    dialog_success.findViewById(R.id.btn_ok).setOnClickListener(v -> dialog_success.dismiss());
-                    dialog_success.show();
+                    showSuccessDialog();
                 } else {
-                    Dialog dialog_error = new Dialog(this);
-                    dialog_error.setContentView(R.layout.dialog_error);
-                    dialog_error.setCancelable(true);
-                    dialog_error.findViewById(R.id.buttonRetry).setOnClickListener(v -> dialog_error.dismiss());
-                    dialog_error.show();
+                    showErrorDialog("فشل الدفع عبر PayPal");
                 }
             }
         }
-    }
-
-    private void fetchTransactions() {
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        JsonArrayRequest request = new JsonArrayRequest(
-                Request.Method.GET,
-                apiUrl,
-                null,
-                response -> {
-                    try {
-                        transactionList.clear();
-                        for (int i = 0; i < response.length(); i++) {
-                            JSONObject obj = response.getJSONObject(i);
-
-                            int id = obj.getInt("id");
-                            String type = obj.getString("type");
-                            double amount = obj.getDouble("amount");
-                            String description = obj.getString("description");
-                            String createdAt = obj.getString("created_at");
-
-                            Transaction transaction = new Transaction(id, type, amount, description, createdAt);
-                            transactionList.add(transaction);
-                        }
-                        transactionAdapter.notifyDataSetChanged();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(this, "Data Analysis Error", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                error -> {
-                    error.printStackTrace();
-                    Toast.makeText(this, "Failed To Connect To Server", Toast.LENGTH_SHORT).show();
-                }
-        );
-
-        queue.add(request);
     }
 }

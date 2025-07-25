@@ -36,7 +36,7 @@ public class Register extends AppCompatActivity {
         tvLoginLink.setOnClickListener(v -> {
             Intent intent = new Intent(Register.this, LoginActivity.class);
             startActivity(intent);
-            finish(); // prevent going back to register screen
+            finish();
         });
     }
 
@@ -76,11 +76,17 @@ public class Register extends AppCompatActivity {
             return;
         }
 
-        // You can call your own API here to save user info
+        //  حفظ البيانات في SharedPreferences
+        getSharedPreferences("UserData", MODE_PRIVATE)
+                .edit()
+                .putString("fullName", fullName)
+                .putString("email", email)
+                .putString("password", password)
+                .apply();
 
         Toast.makeText(this, "Account created successfully!", Toast.LENGTH_LONG).show();
 
-        // Navigate to login screen after successful registration
+        // الانتقال إلى تسجيل الدخول
         Intent intent = new Intent(Register.this, LoginActivity.class);
         startActivity(intent);
         finish();
